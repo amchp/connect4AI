@@ -58,7 +58,6 @@ class Connect4:
             for i in range(len(self.grid))
             for j in range(len(self.grid[i]))
         ]
-        state.append(self.turn)
         return state
 
     def move(self, position: int) -> Union[list[int], int, int]:
