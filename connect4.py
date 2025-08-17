@@ -68,7 +68,6 @@ class Connect4:
         self.num_move += 1
         if self.connect_4(curent_height, position):
             return (self.make_state(), -self.num_move, self.turn, self.turn)
-        # Board full when each column height reaches -1
         if sum(self.heights) == -GRID_COLUMNS:
             return (self.make_state(), -self.num_move, self.turn, TIE_CODE)
         self.turn *= -1

@@ -1,5 +1,3 @@
-"""Centralized named constants to avoid magic numbers."""
-
 WINDOW_WIDTH = 420
 WINDOW_HEIGHT = 361
 
@@ -24,6 +22,5 @@ VICTORY_BUTTONS_TOP_OFFSET = 40
 BUTTON_BORDER_RADIUS = 6
 BUTTON_INNER_INFLATE = 4
 
-# Basic RGB tuples
 COLOR_WHITE = (255, 255, 255)
 COLOR_BLACK = (0, 0, 0)

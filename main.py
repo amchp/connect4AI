@@ -11,7 +11,6 @@ class ScreenControler:
         self.size = self.width, self.height = WINDOW_WIDTH, WINDOW_HEIGHT
         self.screen = display.set_mode(self.size)
         self.current_screen = GameScreen(self.width, self.height, self.screen)
-        # Map to constructors so GameScreen receives window args on transitions
         self.screen_map = {
             ScreensEnum.Menu: lambda: Menu(),
             ScreensEnum.Game: lambda: GameScreen(self.width, self.height, self.screen),

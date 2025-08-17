@@ -21,14 +21,13 @@ from constant import (
 )
 
 
-_last_winner: Optional[int] = None  # 1, -1, 2 (draw)
-_last_frame: Optional[Surface] = None  # snapshot of last game frame
+_last_winner: Optional[int] = None
+_last_frame: Optional[Surface] = None
 
 
 def set_winner(winner: int) -> None:
     global _last_winner
     _last_winner = winner
-    # Capture the current frame so we can render under the overlay
     surf = display.get_surface()
     if surf is not None:
         global _last_frame
@@ -39,11 +38,6 @@ def set_winner(winner: int) -> None:
 
 
 class VictoryScreen:
-    """Semi-transparent overlay announcing the winner.
-
-    Constructed with no args (controller compatibility). Uses module state set
-    by `set_winner()` to render the outcome.
-    """
 
     def __init__(self) -> None:
         self.winner = _last_winner
@@ -87,7 +81,6 @@ class VictoryScreen:
             return
 
         width, height = surf.get_size()
-        # Draw the captured last game frame as the background (if available)
         if _last_frame is not None:
             surf.blit(_last_frame, (0, 0))
         overlay: Surface = pygame.Surface((width, height), flags=pygame.SRCALPHA)

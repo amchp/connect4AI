@@ -63,7 +63,6 @@ class GameScreen:
         if pos != -1:
             _, _, _, winner = self.connect4.move(pos)
             if winner in (1, -1, TIE_CODE):
-                # Ensure the final move is rendered before switching screens
                 self.draw()
                 set_winner(winner)
                 return ScreensEnum.Victory
