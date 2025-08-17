@@ -2,8 +2,8 @@ from enum import Enum
 
 class ScreensEnum(Enum):
     Menu = 0
-    Game = 0
-    Victory = 0
+    Game = 1
+    Victory = 2
 
 class Player(Enum):
     Player1 = 1

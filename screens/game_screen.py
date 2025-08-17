@@ -3,7 +3,10 @@ import pygame
 from pygame import MOUSEBUTTONDOWN, Rect, display, mouse
 from pygame.draw import circle, rect
 from colors import BACKGROUND_COLOR, PLAYER_COLOR_MAP
-from connect4 import GRID_COLUMNS, GRID_ROWS, Connect4
+from connect4 import Connect4
+from constant import GRID_COLUMNS, GRID_ROWS, CIRCLE_RADIUS, TIE_CODE
+from choices import ScreensEnum
+from screens.victory_screen import set_winner
 
 class GameScreen:
     def __init__(self, width, height, screen) -> None:
@@ -13,7 +16,7 @@ class GameScreen:
 
         self.background_rect = Rect(0, 0, self.width, self.height)
 
-        self.radius = 25
+        self.radius = CIRCLE_RADIUS
         self.grid_centers = [[(0.0, 0.0) for _ in range(GRID_COLUMNS)] for _ in range(GRID_ROWS)]
         self.columns = [(0.0, 0.0) for _ in range(GRID_COLUMNS)]
         self.calculate_grid()
@@ -45,17 +48,26 @@ class GameScreen:
             if event.type == pygame.QUIT: 
                 exit()
             if event.type == MOUSEBUTTONDOWN:
-                mouse_x, _ = mouse.get_pos()
-                pos = -1
-                for i in range(GRID_COLUMNS):
-                    if (
-                        self.columns[i][0] <= mouse_x and
-                        mouse_x <= self.columns[i][1]
-                    ):
-                        pos = i
-                        break
-                if pos != -1:
-                    self.connect4.move(pos)
+                return self.mouse_button_down()
+
+    def mouse_button_down(self) -> Optional[int]:
+        mouse_x, _ = mouse.get_pos()
+        pos = -1
+        for i in range(GRID_COLUMNS):
+            if (
+                self.columns[i][0] <= mouse_x and
+                mouse_x <= self.columns[i][1]
+            ):
+                pos = i
+                break
+        if pos != -1:
+            _, _, _, winner = self.connect4.move(pos)
+            if winner in (1, -1, TIE_CODE):
+                # Ensure the final move is rendered before switching screens
+                self.draw()
+                set_winner(winner)
+                return ScreensEnum.Victory
+        return None
 
     def draw_grid(self) -> None:
         for i in range(GRID_ROWS):

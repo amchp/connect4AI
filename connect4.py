@@ -1,9 +1,8 @@
-from typing import Union
-
-
 GRID_ROWS = 6
 GRID_COLUMNS = 7
 CONNECT_TILES = 4
+ILLEGAL_MOVE_SCORE = 1000
+TIE_CODE = 2
 
 class Connect4:
     def __init__(self) -> None:
@@ -60,19 +59,20 @@ class Connect4:
         ]
         return state
 
-    def move(self, position: int) -> Union[list[int], int, int]:
+    def move(self, position: int) -> tuple[list[int], int, int, int]:
         if self.heights[position] < 0:
-            return (self.make_state(), +1000, 0)
+            return (self.make_state(), ILLEGAL_MOVE_SCORE, self.turn, 0)
         curent_height = self.heights[position]
         self.grid[curent_height][position] = self.turn
         self.heights[position] -= 1
         self.num_move += 1
         if self.connect_4(curent_height, position):
-            return (self.make_state(), -self.num_move, self.turn)
-        if sum(self.heights) == -7:
-            return (self.make_state(), -self.num_move, 2)
+            return (self.make_state(), -self.num_move, self.turn, self.turn)
+        # Board full when each column height reaches -1
+        if sum(self.heights) == -GRID_COLUMNS:
+            return (self.make_state(), -self.num_move, self.turn, TIE_CODE)
         self.turn *= -1
-        return (self.make_state(), -self.num_move, 0)
+        return (self.make_state(), -self.num_move, self.turn, 0)
 
     def reset(self) -> list[int]:
         self.grid = [[0 for _ in range(GRID_COLUMNS)] for _ in range(GRID_ROWS)]
